@@ -26,20 +26,20 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a1a2e] to-[#16213e] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white mb-2">
             Marketplace
           </h1>
-          <h2 className="text-xl font-medium text-[#87CEEB]">
+          <h2 className="text-xl font-medium text-[#a1a1aa]">
             Sign in to your account
           </h2>
         </div>
 
         {/* Login Form */}
-        <div className="bg-[#0f3460] rounded-lg shadow-xl p-8 border border-[#87CEEB]/20">
+        <div className="bg-[#18181b] rounded-lg shadow-xl p-8 border border-[#27272a]">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email Field */}
             <div>
@@ -54,7 +54,7 @@ export function Login() {
                 required
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 bg-[#1a1a2e] border border-[#87CEEB]/30 rounded-md text-white placeholder-[#87CEEB]/60 focus:outline-none focus:ring-2 focus:ring-[#87CEEB] focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                 placeholder="Enter your email"
               />
             </div>
@@ -73,13 +73,13 @@ export function Login() {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 pr-12 bg-[#1a1a2e] border border-[#87CEEB]/30 rounded-md text-white placeholder-[#87CEEB]/60 focus:outline-none focus:ring-2 focus:ring-[#87CEEB] focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 pr-12 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#87CEEB]/60 hover:text-[#87CEEB] transition-colors cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#71717a] hover:text-[#8b5cf6] transition-colors cursor-pointer"
                 >
                   {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                 </button>
@@ -93,14 +93,14 @@ export function Login() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-[#87CEEB] focus:ring-[#87CEEB] border-[#87CEEB]/30 rounded bg-[#1a1a2e]"
+                  className="h-4 w-4 text-[#8b5cf6] focus:ring-[#8b5cf6] border-[#3f3f46] rounded bg-[#0a0a0a]"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-[#87CEEB]/80">
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-[#a1a1aa]">
                   Remember me
                 </label>
               </div>
               <div className="text-sm">
-                <a href="#" className="font-medium text-[#87CEEB] hover:text-white transition-colors">
+                <a href="#" className="font-medium text-[#8b5cf6] hover:text-[#a855f7] transition-colors">
                   Forgot your password?
                 </a>
               </div>
@@ -110,7 +110,7 @@ export function Login() {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-[#1a1a2e] bg-[#87CEEB] hover:bg-[#5F9EA0] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#87CEEB] transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
+                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8b5cf6] transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
               >
                 Sign in
               </button>
@@ -119,10 +119,10 @@ export function Login() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#87CEEB]/20"></div>
+                <div className="w-full border-t border-[#3f3f46]"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-[#0f3460] text-[#87CEEB]/60">Or continue with</span>
+                <span className="px-2 bg-[#18181b] text-[#71717a]">Or continue with</span>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export function Login() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-[#87CEEB]/30 rounded-md shadow-sm bg-[#1a1a2e] text-sm font-medium text-white hover:bg-[#87CEEB]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#87CEEB] transition-colors cursor-pointer"
+                className="w-full inline-flex justify-center py-2 px-4 border border-[#3f3f46] rounded-md shadow-sm bg-[#0a0a0a] text-sm font-medium text-white hover:bg-[#18181b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8b5cf6] transition-colors cursor-pointer"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -142,7 +142,7 @@ export function Login() {
               </button>
               <button
                 type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-[#87CEEB]/30 rounded-md shadow-sm bg-[#1a1a2e] text-sm font-medium text-white hover:bg-[#87CEEB]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#87CEEB] transition-colors cursor-pointer"
+                className="w-full inline-flex justify-center py-2 px-4 border border-[#3f3f46] rounded-md shadow-sm bg-[#0a0a0a] text-sm font-medium text-white hover:bg-[#18181b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8b5cf6] transition-colors cursor-pointer"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -155,9 +155,9 @@ export function Login() {
 
         {/* Sign Up Link */}
         <div className="text-center">
-          <p className="text-[#87CEEB]/80">
+          <p className="text-[#a1a1aa]">
             Don't have an account?{' '}
-            <a href="#" className="font-medium text-[#87CEEB] hover:text-white transition-colors">
+            <a href="#" className="font-medium text-[#8b5cf6] hover:text-[#a855f7] transition-colors">
               Sign up
             </a>
           </p>
