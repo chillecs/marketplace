@@ -1,0 +1,21 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "jd@jd.com",
+            "password": "asdasd"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "name": "Product 1",
+            "image": "https://via.placeholder.com/150",
+            "price": 100,
+            "description": "Description 1",
+            "category": "Category 1"
+        }
+    ]
+}
