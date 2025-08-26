@@ -1,11 +1,18 @@
 {
   "users": [
     {
-      "id": 1,
+      "email": "jd@jd.com",
+      "password": "asdasd",
       "firstName": "John",
       "lastName": "Doe",
-      "email": "jd@jd.com",
-      "password": "asdasd"
+      "id": 1
+    },
+    {
+      "email": "dev@dev.com",
+      "password": "$2a$10$E1TyeLdEl8UnhH4Z0H7wDujjEtCQzMcAmcuvzqgpKu3Pd5TncXqQ2",
+      "firstName": "Cristian",
+      "lastName": "Dev",
+      "id": 2
     }
   ],
   "products": [

@@ -1,5 +1,6 @@
 import { useAuthContext } from '../AuthContext/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { NavBar } from '../components/NavBar'
 
 export function Home() {
   const { user, logout } = useAuthContext()

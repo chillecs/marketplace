@@ -4,15 +4,17 @@ import { Register } from './pages/auth/Register'
 import { Home } from './pages/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthContextProvider } from './AuthContext/AuthContext'
-import { RequireAuth } from './AuthContext/RequireAuth'
+import { RequireAuth } from './components/RequireAuth'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { NavBar } from './components/NavBar'
 
 export function App() {
   return (
     <>
       <BrowserRouter>
         <AuthContextProvider>
+          <NavBar />
           <Routes>
             <Route path="/" element={
               <RequireAuth>
