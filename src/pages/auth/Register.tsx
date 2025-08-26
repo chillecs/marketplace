@@ -1,29 +1,45 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useAuthContext } from '../../AuthContext/AuthContext'
+import { z } from 'zod'
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function Register() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
+  const { login, user } = useAuthContext()
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+  
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  const validationSchema = z.object({
+    firstName: z.string().min(1, "First name is required."),
+    lastName: z.string().min(1, "Last name is required."),
+    email: z.string().email("Please provide a valid email address."),
+    password: z.string().min(6, "Your password needs to be at least 6 characters long."),
+    confirmPassword: z.string().min(1, "Please confirm your password."),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+  
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
+  const [errors, setErrors] = useState<any>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Form submission logic will be implemented later
-  }
+  useEffect(() => {
+    if (user) { 
+      navigate("/");
+      return;
+    }
+  }, [user, navigate]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -31,6 +47,69 @@ export function Register() {
 
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword)
+  }
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newFormValues = { ...formValues, [e.target.name]: e.target.value };
+    setFormValues(newFormValues);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    const dataAsObject = { ...formValues };
+    const validationResult = validationSchema.safeParse(dataAsObject);
+    
+    if (!validationResult.success) {
+      const fieldErrors: any = {};
+      validationResult.error.issues.forEach((error: any) => {
+        const path = error.path[0] as string;
+        if (path) {
+          fieldErrors[path] = [error.message];
+        }
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setErrors(null);
+
+    try {
+      const response = await fetch(`${apiUrl}/register`, {
+        method: "POST",
+        body: JSON.stringify({
+          firstName: dataAsObject.firstName,
+          lastName: dataAsObject.lastName,
+          email: dataAsObject.email,
+          password: dataAsObject.password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        if (response.status === 400) {
+          if (typeof data === "string") {
+            toast.error(data);
+          }
+        }
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      login(data);
+      navigate("/");
+      toast.success("Account created successfully!");
+    } catch (error: any) {
+      toast.error(error.message || 'Registration failed');
+    }
+  }
+
+  // Don't render the register form if user is already authenticated
+  if (user) {
+    return null;
   }
 
   return (
@@ -61,11 +140,14 @@ export function Register() {
                   type="text"
                   autoComplete="given-name"
                   required
-                  value={formData.firstName}
+                  value={formValues.firstName}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                   placeholder="First name"
                 />
+                {errors?.firstName && (
+                  <p className="mt-1 text-sm text-red-400">{errors.firstName[0]}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="lastName" className="block text-sm font-medium text-white mb-2">
@@ -77,11 +159,14 @@ export function Register() {
                   type="text"
                   autoComplete="family-name"
                   required
-                  value={formData.lastName}
+                  value={formValues.lastName}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                   placeholder="Last name"
                 />
+                {errors?.lastName && (
+                  <p className="mt-1 text-sm text-red-400">{errors.lastName[0]}</p>
+                )}
               </div>
             </div>
 
@@ -96,11 +181,14 @@ export function Register() {
                 type="email"
                 autoComplete="email"
                 required
-                value={formData.email}
+                value={formValues.email}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                 placeholder="Enter your email"
               />
+              {errors?.email && (
+                <p className="mt-1 text-sm text-red-400">{errors.email[0]}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -115,7 +203,7 @@ export function Register() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   required
-                  value={formData.password}
+                  value={formValues.password}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 pr-12 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                   placeholder="Create a password"
@@ -128,6 +216,9 @@ export function Register() {
                   {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                 </button>
               </div>
+              {errors?.password && (
+                <p className="mt-1 text-sm text-red-400">{errors.password[0]}</p>
+              )}
             </div>
 
             {/* Confirm Password Field */}
@@ -142,7 +233,7 @@ export function Register() {
                   type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
                   required
-                  value={formData.confirmPassword}
+                  value={formValues.confirmPassword}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 pr-12 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                   placeholder="Confirm your password"
@@ -155,6 +246,9 @@ export function Register() {
                   {showConfirmPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                 </button>
               </div>
+              {errors?.confirmPassword && (
+                <p className="mt-1 text-sm text-red-400">{errors.confirmPassword[0]}</p>
+              )}
             </div>
 
             {/* Terms and Conditions */}
@@ -229,7 +323,7 @@ export function Register() {
         <div className="text-center">
           <p className="text-[#a1a1aa]">
             Already have an account?{' '}
-            <a href="#" className="font-medium text-[#8b5cf6] hover:text-[#a855f7] transition-colors">
+            <a href="#" className="font-medium text-[#8b5cf6] hover:text-[#a855f7] transition-colors" onClick={() => navigate('/login')}>
               Sign in
             </a>
           </p>

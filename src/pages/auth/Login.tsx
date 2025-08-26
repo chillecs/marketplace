@@ -1,28 +1,96 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useAuthContext } from '../../AuthContext/AuthContext'
+import { z } from 'zod'
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
+  const { login, user } = useAuthContext()
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  const validationSchema = z.object({
+    email: z.string().email("Please provide a valid email address."),
+    password: z.string().min(6, "Your password needs to be at least 6 characters long."),
+  });
+  
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
+  const [errors, setErrors] = useState<any>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Form submission logic will be implemented later
-  }
+  useEffect(() => {
+    if (user) { 
+      navigate("/");
+      return;
+    }
+  }, [user, navigate]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newFormValues = { ...formValues, [e.target.name]: e.target.value };
+    setFormValues(newFormValues);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    const dataAsObject = { ...formValues };
+    const validationResult = validationSchema.safeParse(dataAsObject);
+    
+    if (!validationResult.success) {
+      const fieldErrors: any = {};
+      validationResult.error.issues.forEach((error: any) => {
+        const path = error.path[0] as string;
+        if (path) {
+          fieldErrors[path] = [error.message];
+        }
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setErrors(null);
+
+    try {
+      const response = await fetch(`${apiUrl}/login`, {
+        method: "POST",
+        body: JSON.stringify(dataAsObject),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        if (response.status === 400) {
+          if (typeof data === "string") {
+            toast.error(data);
+          }
+        }
+        throw new Error(data.message || 'Login failed');
+      }
+
+      login(data);
+      navigate("/");
+      toast.success("You have been logged in successfully!");
+    } catch (error: any) {
+      toast.error(error.message || 'Login failed');
+    }
+  }
+
+  // Don't render the login form if user is already authenticated
+  if (user) {
+    return null;
   }
 
   return (
@@ -52,11 +120,14 @@ export function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                value={formData.email}
+                value={formValues.email}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                 placeholder="Enter your email"
               />
+              {errors?.email && (
+                <p className="mt-1 text-sm text-red-400">{errors.email[0]}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -71,7 +142,7 @@ export function Login() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
-                  value={formData.password}
+                  value={formValues.password}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 pr-12 bg-[#0a0a0a] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent transition-colors"
                   placeholder="Enter your password"
@@ -84,6 +155,9 @@ export function Login() {
                   {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                 </button>
               </div>
+              {errors?.password && (
+                <p className="mt-1 text-sm text-red-400">{errors.password[0]}</p>
+              )}
             </div>
 
             {/* Remember Me & Forgot Password */}
@@ -157,7 +231,7 @@ export function Login() {
         <div className="text-center">
           <p className="text-[#a1a1aa]">
             Don't have an account?{' '}
-            <a href="#" className="font-medium text-[#8b5cf6] hover:text-[#a855f7] transition-colors">
+            <a href="#" className="font-medium text-[#8b5cf6] hover:text-[#a855f7] transition-colors" onClick={() => navigate('/register')}>
               Sign up
             </a>
           </p>
