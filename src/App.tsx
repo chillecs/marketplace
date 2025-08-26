@@ -2,9 +2,10 @@ import './index.css'
 import { Login } from './pages/auth/Login'
 import { Register } from './pages/auth/Register'
 import { Home } from './pages/Home'
+import { Profile } from './pages/Profile'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthContextProvider } from './AuthContext/AuthContext'
-import { RequireAuth } from './components/RequireAuth'
+import { RequireAuth } from './AuthContext/RequireAuth'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { NavBar } from './components/NavBar'
@@ -19,6 +20,11 @@ export function App() {
             <Route path="/" element={
               <RequireAuth>
                 <Home />
+              </RequireAuth>
+            } />
+            <Route path="/profile" element={
+              <RequireAuth>
+                <Profile />
               </RequireAuth>
             } />
             <Route path="/login" element={<Login />} />

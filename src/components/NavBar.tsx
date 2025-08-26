@@ -4,10 +4,10 @@ import { useAuthContext } from "../AuthContext/AuthContext";
 export function NavBar() {
   const { user, logout } = useAuthContext();
   return (
+    <>
+    {user && (
     <nav className="fixed top-0 left-0 right-0 z-50 p-4 bg-[#121212] text-white border-b border-[#27272a]">
       <div className="flex justify-between items-center">
-        {user ? (
-          <>
             <Link to="/" className="text-2xl font-bold">
               Home
             </Link>
@@ -25,18 +25,9 @@ export function NavBar() {
                 Logout
               </button>
             </div>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="hover:text-gray-300">
-              Login
-            </Link>
-            <Link to="/register" className="hover:text-gray-300">
-              Register
-            </Link>
-          </>
-        )}
-      </div>
-    </nav>
+          </div>
+        </nav>
+      )}
+    </>
   );
 }
