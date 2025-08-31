@@ -8,10 +8,10 @@
       "id": 1
     },
     {
-      "email": "dev@dev.com",
-      "password": "$2a$10$E1TyeLdEl8UnhH4Z0H7wDujjEtCQzMcAmcuvzqgpKu3Pd5TncXqQ2",
-      "firstName": "Cristian",
-      "lastName": "Dev",
+      "email": "asd@aswd.com",
+      "password": "$2a$10$uYKnWH6TU12Jxvt2HtyORO3ZdULz4AVPE.IMoeJcMzCM5dQMPjAgO",
+      "firstName": "senzatiee",
+      "lastName": "de omw",
       "id": 2
     }
   ],
@@ -19,10 +19,290 @@
     {
       "id": 1,
       "name": "Product 1",
-      "image": "https://via.placeholder.com/150",
       "price": 100,
+      "seller": "John Doe",
+      "images": [
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop"
+      ],
+      "category": "Category 1",
+      "rating": 4.8,
       "description": "Description 1",
-      "category": "Category 1"
+      "ownerId": 1,
+      "publishedAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Vintage Gaming Console",
+      "price": 299.99,
+      "seller": "TechCollector",
+      "images": [
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Electronics",
+      "rating": 4.8,
+      "description": "Classic gaming console in excellent condition",
+      "ownerId": 1,
+      "publishedAt": "2024-01-16T14:20:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Handcrafted Wooden Chair",
+      "price": 89.99,
+      "seller": "WoodCrafts",
+      "images": [
+        "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Furniture",
+      "rating": 4.9,
+      "description": "Beautiful handcrafted wooden chair",
+      "ownerId": 1,
+      "publishedAt": "2022-01-17T09:15:30.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Artisan Coffee Mug Set",
+      "price": 24.99,
+      "seller": "CeramicStudio",
+      "images": [
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Home & Garden",
+      "rating": 4.7,
+      "description": "Set of 4 handcrafted ceramic mugs",
+      "ownerId": 1,
+      "publishedAt": "2024-01-17T09:15:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Wireless Bluetooth Headphones",
+      "price": 129.99,
+      "seller": "AudioPro",
+      "images": [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop"
+      ],
+      "category": "Electronics",
+      "rating": 4.6,
+      "description": "High-quality wireless headphones",
+      "ownerId": 2,
+      "publishedAt": "2024-01-18T11:45:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Organic Cotton T-Shirt",
+      "price": 19.99,
+      "seller": "EcoFashion",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Clothing",
+      "rating": 4.5,
+      "description": "Comfortable organic cotton t-shirt",
+      "ownerId": 2,
+      "publishedAt": "2024-01-19T16:30:00.000Z"
+    },
+    {
+      "id": 7,
+      "name": "Handmade Jewelry Box",
+      "price": 45.99,
+      "seller": "CraftCorner",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Home & Garden",
+      "rating": 4.8,
+      "description": "Elegant handmade jewelry storage",
+      "ownerId": 2,
+      "publishedAt": "2024-01-20T13:20:00.000Z"
+    },
+    {
+      "id": 8,
+      "name": "Handmade Jewelry",
+      "price": 45.99,
+      "seller": "CraftCorner",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Home & Garden",
+      "rating": 4.8,
+      "description": "Elegant handmade jewelry storage",
+      "ownerId": 2,
+      "publishedAt": "2024-01-21T10:45:00.000Z"
+    },
+    {
+      "id": 9,
+      "name": "Professional Yoga Mat",
+      "price": 34.99,
+      "seller": "FitnessPro",
+      "images": [
+        "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Sports & Outdoors",
+      "rating": 4.7,
+      "description": "Premium non-slip yoga mat for all fitness levels",
+      "ownerId": 1,
+      "publishedAt": "2024-01-22T08:15:00.000Z"
+    },
+    {
+      "id": 10,
+      "name": "Organic Face Serum",
+      "price": 28.5,
+      "seller": "BeautyEssentials",
+      "images": [
+        "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Beauty & Health",
+      "rating": 4.6,
+      "description": "Natural anti-aging face serum with vitamin C",
+      "ownerId": 2,
+      "publishedAt": "2024-01-23T12:30:00.000Z"
+    },
+    {
+      "id": 11,
+      "name": "Board Game Collection",
+      "price": 45,
+      "seller": "GameMaster",
+      "images": [
+        "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Toys & Games",
+      "rating": 4.8,
+      "description": "Family-friendly board game set with 5 classic games",
+      "ownerId": 1,
+      "publishedAt": "2024-01-24T15:45:00.000Z"
+    },
+    {
+      "id": 12,
+      "name": "Car Dashboard Camera",
+      "price": 89.99,
+      "seller": "AutoTech",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Automotive",
+      "rating": 4.4,
+      "description": "HD dash cam with night vision and GPS tracking",
+      "ownerId": 2,
+      "publishedAt": "2024-01-25T09:20:00.000Z"
+    },
+    {
+      "id": 13,
+      "name": "Handmade Ceramic Vase",
+      "price": 65,
+      "seller": "ArtisanCrafts",
+      "images": [
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Art & Collectibles",
+      "rating": 4.9,
+      "description": "Unique handcrafted ceramic vase with geometric patterns",
+      "ownerId": 1,
+      "publishedAt": "2024-01-26T14:10:00.000Z"
+    },
+    {
+      "id": 14,
+      "name": "Gourmet Coffee Beans",
+      "price": 22.99,
+      "seller": "CoffeeRoasters",
+      "images": [
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Food & Beverages",
+      "rating": 4.7,
+      "description": "Premium single-origin coffee beans, medium roast",
+      "ownerId": 2,
+      "publishedAt": "2024-01-27T11:35:00.000Z"
+    },
+    {
+      "id": 15,
+      "name": "Pet Carrier Backpack",
+      "price": 39.99,
+      "seller": "PetLovers",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Pet Supplies",
+      "rating": 4.5,
+      "description": "Comfortable pet carrier backpack for small dogs and cats",
+      "ownerId": 1,
+      "publishedAt": "2024-01-28T16:50:00.000Z"
+    },
+    {
+      "id": 16,
+      "name": "Professional Tool Set",
+      "price": 129.99,
+      "seller": "ToolMaster",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Tools & Hardware",
+      "rating": 4.8,
+      "description": "Complete 50-piece professional tool set for DIY projects",
+      "ownerId": 2,
+      "publishedAt": "2024-01-29T13:25:00.000Z"
+    },
+    {
+      "id": 17,
+      "name": "Sterling Silver Necklace",
+      "price": 85,
+      "seller": "JewelryCraft",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Jewelry & Accessories",
+      "rating": 4.6,
+      "description": "Elegant sterling silver necklace with pendant",
+      "ownerId": 1,
+      "publishedAt": "2024-01-30T10:40:00.000Z"
+    },
+    {
+      "id": 18,
+      "name": "Programming Books Bundle",
+      "price": 55.99,
+      "seller": "TechBooks",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+      ],
+      "category": "Books & Media",
+      "rating": 4.7,
+      "description": "Complete set of programming books for beginners",
+      "ownerId": 2,
+      "publishedAt": "2024-01-31T17:15:00.000Z"
     }
   ]
 }

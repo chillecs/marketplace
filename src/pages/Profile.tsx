@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useAuthContext } from '../AuthContext/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { FaEye, FaEyeSlash, FaEdit, FaTrash } from 'react-icons/fa'
+import { FaEye, FaEyeSlash, FaEdit, FaTrash, FaSave } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 export function Profile() {
   const { user, accessToken, login, logout } = useAuthContext()
   const navigate = useNavigate()
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditingFirstName, setIsEditingFirstName] = useState(false)
+  const [isEditingLastName, setIsEditingLastName] = useState(false)
+  const [isEditingEmail, setIsEditingEmail] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -16,8 +18,9 @@ export function Profile() {
   const apiUrl = import.meta.env.VITE_API_URL
 
   const [formData, setFormData] = useState({
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
     email: user?.email || '',
-    currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   })
@@ -25,11 +28,10 @@ export function Profile() {
   const [errors, setErrors] = useState<any>(null)
 
   const emailSchema = z.object({
-    email: z.string().email("Please provide a valid email address."),
+    email: z.email("Please provide a valid email address."),
   })
 
   const passwordSchema = z.object({
-    currentPassword: z.string().min(1, "Current password is required."),
     newPassword: z.string().min(6, "New password must be at least 6 characters."),
     confirmPassword: z.string().min(1, "Please confirm your new password."),
   }).refine((data) => data.newPassword === data.confirmPassword, {
@@ -45,6 +47,61 @@ export function Profile() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  const handleUpdateFirstName = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/users/${user?.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ firstName: formData.firstName })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update first name')
+      }
+
+      // Update user context with new data
+      login({ user: { ...user!, firstName: formData.firstName }, accessToken })
+      toast.success('First name updated successfully!')
+      setIsEditingFirstName(false)
+      setErrors(null)
+      console.log(accessToken)
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update first name')
+    }
+  }
+
+  const handleUpdateLastName = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/users/${user?.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ lastName: formData.lastName })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update last name')
+      }
+
+      // Update user context with new data
+      login({ user: { ...user!, lastName: formData.lastName }, accessToken })
+      toast.success('Last name updated successfully!')
+      setIsEditingLastName(false)
+      setErrors(null)
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update last name')
+    }
+  }
+
   const handleUpdateEmail = async () => {
     const validation = emailSchema.safeParse({ email: formData.email })
     
@@ -54,7 +111,7 @@ export function Profile() {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/users/me`, {
+      const response = await fetch(`${apiUrl}/users/${user?.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +129,7 @@ export function Profile() {
       // Update user context with new email
       login({ user: { ...user!, email: formData.email }, accessToken })
       toast.success('Email updated successfully!')
-      setIsEditing(false)
+      setIsEditingEmail(false)
       setErrors(null)
     } catch (error: any) {
       toast.error(error.message || 'Failed to update email')
@@ -95,15 +152,14 @@ export function Profile() {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/users/me`, {
+      const response = await fetch(`${apiUrl}/users/${user?.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify({ 
-          currentPassword: formData.currentPassword,
-          newPassword: formData.newPassword 
+          password: formData.newPassword
         })
       })
 
@@ -116,7 +172,6 @@ export function Profile() {
       toast.success('Password updated successfully!')
       setFormData(prev => ({ 
         ...prev, 
-        currentPassword: '', 
         newPassword: '', 
         confirmPassword: '' 
       }))
@@ -128,7 +183,7 @@ export function Profile() {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch(`${apiUrl}/users/me`, {
+      const response = await fetch(`${apiUrl}/users/${user?.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${accessToken}`
@@ -164,25 +219,96 @@ export function Profile() {
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-white mb-4">Account Information</h2>
             <div className="space-y-4">
+              {/* First Name Section */}
               <div className="flex justify-between items-center p-4 bg-[#0a0a0a] rounded-lg">
                 <div>
                   <p className="text-[#a1a1aa] text-sm">First Name</p>
                   <p className="text-white font-medium">{user.firstName || 'Not set'}</p>
+                  {isEditingFirstName && (
+                    <div className="flex items-center gap-6 mt-3">
+                    <input className="px-3 py-2 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName || ''}
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      onClick={handleUpdateFirstName}
+                      className="flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
+                    >
+                      <FaSave className="w-4 h-4" />
+                      Save
+                    </button>
+                    <p className="text-[#a1a1aa] text-sm cursor-pointer" onClick={() => setIsEditingFirstName(false)}>Cancel</p>
+                    </div>
+                  )}
                 </div>
+                <button
+                  onClick={() => setIsEditingFirstName(!isEditingFirstName)}
+                  className="flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
+                >
+                  <FaEdit className="w-4 h-4" />
+                  Edit
+                </button>
               </div>
+              {/* Last Name Section */}
               <div className="flex justify-between items-center p-4 bg-[#0a0a0a] rounded-lg">
                 <div>
                   <p className="text-[#a1a1aa] text-sm">Last Name</p>
                   <p className="text-white font-medium">{user.lastName || 'Not set'}</p>
+                  {isEditingLastName && (
+                    <div className="flex items-center gap-6 mt-3">
+                    <input className="px-3 py-2 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName || ''}
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      onClick={handleUpdateLastName}
+                      className="flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
+                    >
+                      <FaSave className="w-4 h-4" />
+                      Save
+                    </button>
+                    <p className="text-[#a1a1aa] text-sm cursor-pointer" onClick={() => setIsEditingLastName(false)}>Cancel</p>
+                    </div>
+                  )}
                 </div>
+                <button
+                  onClick={() => setIsEditingLastName(!isEditingLastName)}
+                  className="flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
+                >
+                  <FaEdit className="w-4 h-4" />
+                  Edit
+                </button>
               </div>
+              {/* Email Section */}
               <div className="flex justify-between items-center p-4 bg-[#0a0a0a] rounded-lg">
                 <div>
                   <p className="text-[#a1a1aa] text-sm">Email</p>
                   <p className="text-white font-medium">{user.email}</p>
+                  {isEditingEmail && (
+                    <div className="flex items-center gap-6 mt-3">
+                      <input className="px-3 py-2 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
+                        type="email"
+                        name="email"
+                        value={formData.email || ''}
+                        onChange={handleInputChange}
+                      />
+                      <button
+                        onClick={handleUpdateEmail}
+                        className="flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
+                      >
+                        <FaSave className="w-4 h-4" />
+                        Save
+                      </button>
+                      <p className="text-[#a1a1aa] text-sm cursor-pointer" onClick={() => setIsEditingEmail(false)}>Cancel</p>
+                    </div>
+                  )}
                 </div>
                 <button
-                  onClick={() => setIsEditing(!isEditing)}
+                  onClick={() => setIsEditingEmail(!isEditingEmail)}
                   className="flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
                 >
                   <FaEdit className="w-4 h-4" />
@@ -192,66 +318,11 @@ export function Profile() {
             </div>
           </div>
 
-          {/* Edit Email Section */}
-          {isEditing && (
-            <div className="mb-8 p-6 bg-[#0a0a0a] rounded-lg border border-[#3f3f46]">
-              <h3 className="text-lg font-semibold text-white mb-4">Update Email</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-white mb-2">
-                    New Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
-                    placeholder="Enter new email"
-                  />
-                  {errors?.email && (
-                    <p className="mt-1 text-sm text-red-400">{errors.email[0]}</p>
-                  )}
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleUpdateEmail}
-                    className="flex-1 py-3 px-4 text-sm font-medium rounded-md text-white bg-[#8b5cf6] hover:bg-[#7c3aed] transition-colors cursor-pointer"
-                  >
-                    Update Email
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsEditing(false)
-                      setFormData(prev => ({ ...prev, email: user.email || '' }))
-                      setErrors(null)
-                    }}
-                    className="flex-1 py-3 px-4 text-sm font-medium rounded-md text-white bg-[#3f3f46] hover:bg-[#52525b] transition-colors cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Update Password Section */}
           <div className="mb-8 p-6 bg-[#0a0a0a] rounded-lg border border-[#3f3f46]">
             <h3 className="text-lg font-semibold text-white mb-4">Update Password</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-white mb-2">
-                  Current Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="currentPassword"
-                    value={formData.currentPassword}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 pr-12 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
-                    placeholder="Enter current password"
-                  />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
@@ -259,9 +330,8 @@ export function Profile() {
                   >
                     {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                   </button>
-                </div>
-                {errors?.currentPassword && (
-                  <p className="mt-1 text-sm text-red-400">{errors.currentPassword[0]}</p>
+                {errors?.newPassword && (
+                  <p className="mt-1 text-sm text-red-400">{errors.newPassword[0]}</p>
                 )}
               </div>
               <div>
@@ -272,7 +342,7 @@ export function Profile() {
                   <input
                     type={showNewPassword ? "text" : "password"}
                     name="newPassword"
-                    value={formData.newPassword}
+                    value={formData.newPassword || ''}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 pr-12 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
                     placeholder="Enter new password"
@@ -296,7 +366,7 @@ export function Profile() {
                 <input
                   type="password"
                   name="confirmPassword"
-                  value={formData.confirmPassword}
+                  value={formData.confirmPassword || ''}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
                   placeholder="Confirm new password"

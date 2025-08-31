@@ -9,6 +9,8 @@ import { RequireAuth } from './AuthContext/RequireAuth'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { NavBar } from './components/NavBar'
+import { UserProducts } from './pages/UserProducts'
+import { ProductDetails } from './pages/ProductDetails'
 
 export function App() {
   return (
@@ -25,6 +27,16 @@ export function App() {
             <Route path="/profile" element={
               <RequireAuth>
                 <Profile />
+              </RequireAuth>
+            } />
+            <Route path="/your-products/:id" element={
+              <RequireAuth>
+                <UserProducts />
+              </RequireAuth>
+            } />
+            <Route path="/product/:id" element={
+              <RequireAuth>
+                <ProductDetails />
               </RequireAuth>
             } />
             <Route path="/login" element={<Login />} />
