@@ -11,8 +11,8 @@ export function Profile() {
   const [isEditingFirstName, setIsEditingFirstName] = useState(false)
   const [isEditingLastName, setIsEditingLastName] = useState(false)
   const [isEditingEmail, setIsEditingEmail] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   
   const apiUrl = import.meta.env.VITE_API_URL
@@ -39,8 +39,8 @@ export function Profile() {
     path: ["confirmPassword"],
   })
 
-  const togglePasswordVisibility = () => setShowPassword(!showPassword)
   const toggleNewPasswordVisibility = () => setShowNewPassword(!showNewPassword)
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -323,18 +323,6 @@ export function Profile() {
             <h3 className="text-lg font-semibold text-white mb-4">Update Password</h3>
             <div className="space-y-4">
               <div>
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#71717a] hover:text-[#8b5cf6] transition-colors cursor-pointer"
-                  >
-                    {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
-                  </button>
-                {errors?.newPassword && (
-                  <p className="mt-1 text-sm text-red-400">{errors.newPassword[0]}</p>
-                )}
-              </div>
-              <div>
                 <label className="block text-sm font-medium text-white mb-2">
                   New Password
                 </label>
@@ -363,14 +351,23 @@ export function Profile() {
                 <label className="block text-sm font-medium text-white mb-2">
                   Confirm New Password
                 </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
-                  placeholder="Confirm new password"
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword || ''}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 pr-12 bg-[#18181b] border border-[#3f3f46] rounded-md text-white placeholder-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:border-transparent"
+                    placeholder="Confirm new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={toggleConfirmPasswordVisibility}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#71717a] hover:text-[#8b5cf6] transition-colors cursor-pointer"
+                  >
+                    {showConfirmPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
+                  </button>
+                </div>
                 {errors?.confirmPassword && (
                   <p className="mt-1 text-sm text-red-400">{errors.confirmPassword[0]}</p>
                 )}

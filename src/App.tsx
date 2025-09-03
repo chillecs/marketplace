@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { NavBar } from './components/NavBar'
 import { UserProducts } from './pages/UserProducts'
 import { ProductDetails } from './pages/ProductDetails'
+import { EditProduct } from './pages/EditProduct'
 
 export function App() {
   return (
@@ -37,6 +38,11 @@ export function App() {
             <Route path="/product/:id" element={
               <RequireAuth>
                 <ProductDetails />
+              </RequireAuth>
+            } />
+            <Route path="/edit-product/:id" element={
+              <RequireAuth>
+                <EditProduct />
               </RequireAuth>
             } />
             <Route path="/login" element={<Login />} />
